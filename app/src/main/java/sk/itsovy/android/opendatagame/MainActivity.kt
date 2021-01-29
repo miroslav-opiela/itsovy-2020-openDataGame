@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnImageClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewNames)
-        recyclerView.adapter = NamesAdapter()
+        recyclerView.adapter = NamesAdapter(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -75,5 +75,9 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onImageClick(viewHolder: NamesAdapter.NamesViewHolder) {
+        itemTouchHelper.startDrag(viewHolder)
     }
 }
