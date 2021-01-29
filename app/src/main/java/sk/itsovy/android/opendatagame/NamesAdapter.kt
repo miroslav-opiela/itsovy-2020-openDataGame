@@ -19,6 +19,12 @@ class NamesAdapter(val listener: OnImageClickListener) :
             notifyDataSetChanged()
         }
 
+    var visibleCounts = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     fun moveItem(from: Int, to: Int) {
         Collections.swap(data, from, to)
     }
@@ -35,7 +41,7 @@ class NamesAdapter(val listener: OnImageClickListener) :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: NamesViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], visibleCounts)
     }
 
     class NamesViewHolder(itemView: View, val listener: OnImageClickListener) :
@@ -45,9 +51,14 @@ class NamesAdapter(val listener: OnImageClickListener) :
         private val textViewCount = itemView.findViewById<TextView>(R.id.textViewNumber)
         private val image = itemView.findViewById<ImageView>(R.id.reorderIcon)
 
-        fun bind(item: Record) {
+        fun bind(item: Record, visibleCounts: Boolean) {
             textViewName.text = item.name
-            textViewCount.text = "Count: ${item.count}"
+            if (visibleCounts) {
+                textViewCount.visibility = View.VISIBLE
+                textViewCount.text = "Count: ${item.count}"
+            } else {
+                textViewCount.visibility = View.INVISIBLE
+            }
 
             image.setOnTouchListener { _, motionEvent ->
 

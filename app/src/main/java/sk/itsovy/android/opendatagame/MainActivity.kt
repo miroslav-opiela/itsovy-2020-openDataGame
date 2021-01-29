@@ -35,14 +35,14 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
     }
 
     private fun onFabClicked() {
-        if (isPlaying) {
-
-        } else {
+        if (!isPlaying) {
            // vyrobit novy zoznam a data dat adapteru
             val model : NamesViewModel by viewModels()
             val list = model.getRandomList(count = 4)
             adapter.data = list
         }
+        // isPlaying=false -> visibleCounts=false
+        adapter.visibleCounts = isPlaying
         isPlaying = !isPlaying
     }
 
