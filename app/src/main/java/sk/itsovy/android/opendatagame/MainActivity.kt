@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,12 +20,45 @@ class MainActivity : AppCompatActivity() {
         //T!  bud T alebo T?
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewNames)
         recyclerView.adapter = NamesAdapter()
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private val itemTouchHelper by lazy {
+
+        var simpleItemTouchCallback =
+            object : ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                        or ItemTouchHelper.START or ItemTouchHelper.END, 0
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    val adapter = recyclerView.adapter as NamesAdapter
+                    val from = viewHolder.adapterPosition
+                    val to = target.adapterPosition
+                    adapter.moveItem(from, to)
+                    adapter.notifyItemMoved(from, to)
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    //nothing
+                }
+
+            }
+
+        //return@lazy
+        ItemTouchHelper(simpleItemTouchCallback)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

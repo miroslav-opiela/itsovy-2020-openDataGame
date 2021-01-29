@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 class NamesAdapter : RecyclerView.Adapter<NamesAdapter.NamesViewHolder>() {
 
-    val data = listOf<Record>(
+    val data = mutableListOf<Record>(
         Record("Anton", 4000),
         Record("Milan", 1000),
         Record(name="Filip", count=2500),
@@ -16,6 +17,10 @@ class NamesAdapter : RecyclerView.Adapter<NamesAdapter.NamesViewHolder>() {
         Record("Tibor", 150),
         Record("Stefan", 350)
     )
+
+    fun moveItem(from: Int, to: Int) {
+        Collections.swap(data, from, to)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NamesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
