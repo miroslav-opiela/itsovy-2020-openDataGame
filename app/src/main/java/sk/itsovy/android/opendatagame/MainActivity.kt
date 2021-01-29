@@ -6,11 +6,15 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity(), OnImageClickListener {
+
+    var isPlaying = false
+    lateinit var adapter: NamesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,16 +22,28 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         //T!  bud T alebo T?
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            onFabClicked()
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewNames)
-        recyclerView.adapter = NamesAdapter(this)
+        adapter = NamesAdapter(this)
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun onFabClicked() {
+        if (isPlaying) {
+
+        } else {
+           // vyrobit novy zoznam a data dat adapteru
+            val model : NamesViewModel by viewModels()
+            val list = model.getRandomList(count = 4)
+            adapter.data = list
+        }
+        isPlaying = !isPlaying
     }
 
     private val itemTouchHelper by lazy {

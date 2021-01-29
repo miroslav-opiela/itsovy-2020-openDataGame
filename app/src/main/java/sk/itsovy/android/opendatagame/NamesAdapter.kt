@@ -13,14 +13,11 @@ import java.util.*
 class NamesAdapter(val listener: OnImageClickListener) :
     RecyclerView.Adapter<NamesAdapter.NamesViewHolder>() {
 
-    val data = mutableListOf<Record>(
-        Record("Anton", 4000),
-        Record("Milan", 1000),
-        Record(name = "Filip", count = 2500),
-        Record("Rastislav", 500),
-        Record("Tibor", 150),
-        Record("Stefan", 350)
-    )
+    var data = listOf<Record>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     fun moveItem(from: Int, to: Int) {
         Collections.swap(data, from, to)
@@ -55,7 +52,7 @@ class NamesAdapter(val listener: OnImageClickListener) :
             image.setOnTouchListener { _, motionEvent ->
 
                 if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
-                    listener.onImageClick(NamesViewHolder@this)
+                    listener.onImageClick(NamesViewHolder@ this)
                 }
 
                 return@setOnTouchListener true
