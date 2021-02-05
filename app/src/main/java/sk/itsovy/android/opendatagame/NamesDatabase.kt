@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Record::class), version = 1, exportSchema = false)
-public abstract class NamesDatabase : RoomDatabase() {
+@Database(entities = [Record::class], version = 1, exportSchema = false)
+abstract class NamesDatabase : RoomDatabase() {
 
     abstract fun namesDao(): NamesDao
 
