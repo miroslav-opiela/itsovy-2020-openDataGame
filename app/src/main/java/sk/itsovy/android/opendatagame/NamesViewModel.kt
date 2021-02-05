@@ -1,8 +1,7 @@
 package sk.itsovy.android.opendatagame
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import kotlin.math.min
 
 class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
@@ -18,13 +17,27 @@ class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
 
     val data: LiveData<List<Record>> = repository.allNames.asLiveData()
 
+    fun insert(record: Record) = viewModelScope.launch {
+        repository.insert(record)
+    }
+
     /**
      * z hlavneho zoznamu vrati podzoznam dlzky COUNT
      * ktory bude nahodny a zamiesany
      */
-    fun getRandomList(count: Int) : List<Record> {
+    fun getRandomList(count: Int): List<Record> {
         val cachedData = data.value ?: defaultData
         val shuffledList = cachedData.shuffled()
         return shuffledList.subList(0, min(count, shuffledList.size))
+    }
+}
+
+class NamesViewModelFactory(private val repository: NamesRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NamesViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return NamesViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
 
     var isPlaying = false
     lateinit var adapter: NamesAdapter
+    val model : NamesViewModel by viewModels() {
+        NamesViewModelFactory((application as NamesApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +39,7 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
 
     private fun onFabClicked() {
         if (!isPlaying) {
-           // vyrobit novy zoznam a data dat adapteru
-            val model : NamesViewModel by viewModels()
+           // vyrobit novy zoznam a data dat adapter
             val list = model.getRandomList(count = 4)
             adapter.data = list
         }
