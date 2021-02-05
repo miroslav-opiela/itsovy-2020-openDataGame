@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
            // vyrobit novy zoznam a data dat adapter
             val list = model.getRandomList(count = 4)
             adapter.data = list
+        } else {
+            model.insert(Record("Andrej", 4000000))
         }
         // isPlaying=false -> visibleCounts=false
         adapter.visibleCounts = isPlaying

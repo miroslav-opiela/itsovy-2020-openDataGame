@@ -1,5 +1,6 @@
 package sk.itsovy.android.opendatagame
 
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kotlin.math.min
@@ -26,6 +27,7 @@ class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
      * ktory bude nahodny a zamiesany
      */
     fun getRandomList(count: Int): List<Record> {
+        Log.d("DATABASE", data.value.toString())
         val cachedData = data.value ?: defaultData
         val shuffledList = cachedData.shuffled()
         return shuffledList.subList(0, min(count, shuffledList.size))
