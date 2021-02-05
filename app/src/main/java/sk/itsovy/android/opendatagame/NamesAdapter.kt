@@ -44,6 +44,23 @@ class NamesAdapter(val listener: OnImageClickListener) :
         holder.bind(data[position], visibleCounts)
     }
 
+    fun win(): Boolean {
+        data.zipWithNext { a, b -> if (a.count < b.count) return false }
+        return true
+    }
+
+    /*public boolean isWin() {
+       // toto je inst. premenna
+        List<Record> data;
+        for (int i = 0; i < data.size() - 1; i++) {
+            if (data.get(i) < data.get(i + 1)) {
+                return false;
+            }
+        }
+        return true;
+        // true ak plati  ze
+    }*/
+
     class NamesViewHolder(itemView: View, val listener: OnImageClickListener) :
         RecyclerView.ViewHolder(itemView) {
 

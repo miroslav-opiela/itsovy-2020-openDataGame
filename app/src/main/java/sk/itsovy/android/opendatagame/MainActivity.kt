@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,11 +40,21 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
 
     private fun onFabClicked() {
         if (!isPlaying) {
+            // ZACINA NOVA HRA
+
            // vyrobit novy zoznam a data dat adapter
             val list = model.getRandomList(count = 4)
             adapter.data = list
         } else {
-            model.insert(Record("Andrej", 4000000))
+            // VYHODNITIME HRU
+            if (adapter.win()) {
+                Toast.makeText(this, "WINNER", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "LOSER", Toast.LENGTH_LONG).show()
+            }
+
+
+            //model.insert(Record("Andrej", 4000000))
         }
         // isPlaying=false -> visibleCounts=false
         adapter.visibleCounts = isPlaying
