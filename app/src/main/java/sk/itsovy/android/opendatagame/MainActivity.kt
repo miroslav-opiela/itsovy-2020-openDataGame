@@ -1,6 +1,7 @@
 package sk.itsovy.android.opendatagame
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,12 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        model.data.observe(this, Observer { records ->
+            records?.let {
+                Log.d("OBSERVER", it.toString())
+            }
+        })
     }
 
     private fun onFabClicked() {
