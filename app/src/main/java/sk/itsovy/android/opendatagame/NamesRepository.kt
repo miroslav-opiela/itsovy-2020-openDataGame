@@ -19,12 +19,13 @@ class NamesRepository(private val namesDao: NamesDao) {
 
     suspend fun loadNames() {
         RestApi.namesRestDao.getNames().enqueue(
-            object: Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
+            object: Callback<List<Record>> {
+                override fun onFailure(call: Call<List<Record>>, t: Throwable) {
                     Log.d("RETROFIT", "On failure ${t.message}")
                 }
 
-                override fun onResponse(call: Call<String>, response: Response<String>) {
+                override fun onResponse(call: Call<List<Record>>, response: Response<List<Record>>) {
+                    Log.d("RETROFIT", "${response.body()?.size}")
                     Log.d("RETROFIT", response.body().toString())
                 }
 
