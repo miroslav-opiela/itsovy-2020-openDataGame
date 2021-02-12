@@ -36,7 +36,8 @@ class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
     fun getRandomList(count: Int): List<Record> {
         Log.d("DATABASE", data.value.toString())
         val cachedData = data.value ?: defaultData
-        val shuffledList = cachedData.shuffled()
+
+        val shuffledList = cachedData.filter { record -> record.count > 1 }.shuffled()
         return shuffledList.subList(0, min(count, shuffledList.size))
     }
 }
