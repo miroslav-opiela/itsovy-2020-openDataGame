@@ -22,6 +22,13 @@ class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
         repository.insert(record)
     }
 
+    fun reloadNames() {
+        viewModelScope.launch {
+            repository.loadNames()
+        }
+
+    }
+
     /**
      * z hlavneho zoznamu vrati podzoznam dlzky COUNT
      * ktory bude nahodny a zamiesany

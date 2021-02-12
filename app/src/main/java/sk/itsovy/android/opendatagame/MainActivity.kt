@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
 
     var isPlaying = false
     lateinit var adapter: NamesAdapter
-    val model : NamesViewModel by viewModels() {
+    val model: NamesViewModel by viewModels() {
         NamesViewModelFactory((application as NamesApplication).repository)
     }
 
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
         if (!isPlaying) {
             // ZACINA NOVA HRA
 
-           // vyrobit novy zoznam a data dat adapter
+            // vyrobit novy zoznam a data dat adapter
             val list = model.getRandomList(count = 4)
             adapter.data = list
         } else {
@@ -111,7 +111,10 @@ class MainActivity : AppCompatActivity(), OnImageClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                model.reloadNames()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

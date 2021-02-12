@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sk.itsovy.android.opendatagame">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".NamesApplication"
         android:allowBackup="true"
