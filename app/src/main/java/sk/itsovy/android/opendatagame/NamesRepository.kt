@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class NamesRepository(private val namesDao: NamesDao) {
 
@@ -18,19 +21,34 @@ class NamesRepository(private val namesDao: NamesDao) {
     }
 
     suspend fun loadNames() {
-        RestApi.namesRestDao.getNames().enqueue(
-            object: Callback<List<Record>> {
-                override fun onFailure(call: Call<List<Record>>, t: Throwable) {
-                    Log.d("RETROFIT", "On failure ${t.message}")
-                }
+        namesDao.deleteAll()
+        val call = RestApi.namesRestDao.getNames()
+        val response = suspendCoroutine<Response<List<Record>>> {
+            continuation ->
+            call.enqueue(
+                object : Callback<List<Record>> {
+                    override fun onFailure(call: Call<List<Record>>, t: Throwable) {
+                        continuation.resumeWithException(t)
+                    }
 
-                override fun onResponse(call: Call<List<Record>>, response: Response<List<Record>>) {
-                    Log.d("RETROFIT", "${response.body()?.size}")
-                    Log.d("RETROFIT", response.body().toString())
-                }
+                    override fun onResponse(
+                        call: Call<List<Record>>,
+                        response: Response<List<Record>>
+                    ) {
+                        continuation.resume(response)
+                    }
 
+                }
+            )
+        }
+        val list = response.body()
+        if (list != null) {
+            for (record in list) {
+                insert(record)
             }
-        )
+        }
+
+
     }
 
 }
